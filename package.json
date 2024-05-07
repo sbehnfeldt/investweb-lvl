@@ -2,12 +2,15 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "sass:compile" : "node-sass resources/sass/main.scss public/style.css",
+        "sass:watch" : "node-sass resources/sass/main.scss public/style.css -w",
         "dev": "vite",
         "build": "vite build"
     },
     "devDependencies": {
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0",
+        "node-sass": "^9.0.0",
         "vite": "^5.0"
     }
 }
