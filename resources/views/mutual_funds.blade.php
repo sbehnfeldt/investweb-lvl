@@ -29,8 +29,18 @@
         </header>
 
         <main>
-            <h1>InvestWeb</h1>
-            <p>TODO: Display a summary or portal</p>
+            <h1>Mutual Funds</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
         </main>
 
         <footer></footer>
