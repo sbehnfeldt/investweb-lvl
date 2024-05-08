@@ -1,18 +1,31 @@
 
 body {
     nav {
+        border: 2px solid #ccc;
+
         ul {
+            @include clearfix;
             list-style: none;
 
             li {
-                a {
-                    text-decoration: none;
+                float: left;
+                text-align: center;
 
-                    &:hover {
-                        background-color: orangered;
-                    }
+                &:not(:last-child) {
+                    border-right: 2px solid crimson;
                 }
 
+                a {
+                    display: inline-block;
+                    background: lightskyblue;
+                    text-decoration: none;
+                    padding: .5rem 2rem;
+                    width: 200px;
+
+                    &:hover {
+                        background: deepskyblue;
+                    }
+                }
             }
         }
     }
