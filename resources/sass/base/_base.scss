@@ -1,7 +1,8 @@
 
 body {
     nav {
-        border: 2px solid #ccc;
+        border: 2px solid var(--border);
+        background: var(--color);
 
         ul {
             @include clearfix;
@@ -12,18 +13,17 @@ body {
                 text-align: center;
 
                 &:not(:last-child) {
-                    border-right: 2px solid crimson;
                 }
 
                 a {
+                    color: var(--font-color);
                     display: inline-block;
-                    background: lightskyblue;
                     text-decoration: none;
                     padding: .5rem 2rem;
                     width: 200px;
 
                     &:hover {
-                        background: deepskyblue;
+                        background: var(--hover);
                     }
                 }
             }
@@ -31,6 +31,37 @@ body {
     }
 
     main {
+        table {
+            width: 50%;
+            margin: 0 auto;
+            border-collapse: collapse;
+
+            tr {
+            }
+
+            th, td {
+                border: 1px solid var(--border);
+                padding: .5rem 1rem;
+
+            }
+
+            thead {
+                th {
+                    background-color: var(--th);
+                }
+            }
+
+            tbody {
+                td {
+                    background-color: var(--td);
+                }
+
+            }
+
+            tfoot {
+            }
+        }
+
         footer {
         }
     }

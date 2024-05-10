@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+
         <link rel="stylesheet" href="/style.css">
 
         <!-- Fonts -->
@@ -38,7 +40,16 @@
                         <th>Description</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                @foreach($mutualFunds as $fund)
+                    <tr>
+                        <td>{{$fund[ 'symbol']}}</td>
+                        <td>{{$fund[ 'name']}}</td>
+                        <td>{{$fund[ 'description']}}</td>
+                    </tr>
+
+                @endforeach
+                </tbody>
             </table>
 
         </main>

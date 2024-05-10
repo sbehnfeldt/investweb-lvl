@@ -1,1 +1,16 @@
-:root {}
+:root {
+    --primary: skyblue;
+    --border: #444;
+    --font-color: #333;
+}
+
+nav {
+    --color: var(--primary);
+    --hover: deepskyblue;
+}
+
+table {
+    --th: #acacac;
+    --td: #f8f8f8;
+
+}
