@@ -1,3 +1,6 @@
+# InvestWeb (Laravel) Developer Notes
+
+## Scaffolding
 ```shell
 $> composer global require laravel/installer
 $> laravel --version
@@ -9,4 +12,11 @@ $> composer install
 $> npm i
 $> npm i -D node-sass
 $> php artisan make:model -cfm MutualFund  
+```
+## Run Dev Env
+```shell
+npm run sass:compile
+npm run sass:watch
+npm run dev
+php artisan serve
 ```
