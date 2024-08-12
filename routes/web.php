@@ -9,9 +9,7 @@ Route::get('/', function () {
 
 Route::get('/mutual_funds', function () {
     return view('mutual_funds', [
-        'mutualFunds' => [
-            ['name' => 'Bobo Fund', 'symbol' => 'BOBO', 'description' => 'A test mutual fund']
-        ]
+        'mutualFunds' => MutualFund::all()
     ]);
 });
 

@@ -17,7 +17,9 @@ class MutualFundFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => ucwords( join( ' ', fake()->words())) . ' Fund',
+            'symbol' => strtoupper( fake()->lexify(str_repeat('?', rand(4,8)))),
+            'description' => fake()->text
         ];
     }
 }
