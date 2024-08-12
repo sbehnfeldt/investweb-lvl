@@ -20,7 +20,7 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="/">Home</a>
+                        <a href="/">Dashboard</a>
                     </li>
                     <li>
                         <a href="/mutual_funds">Mutual Funds</a>

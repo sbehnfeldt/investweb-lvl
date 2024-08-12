@@ -23,12 +23,20 @@ php artisan serve
 
 ## New Model
 Generate the Post model and all other associated classes:
+
 ```php
 php artisan make:model -a MutualFund
 ```
+
 - Edit the migration
 - Run the migration `php artisan migrate`
 - Define the MutualFund seeding in `MutualFundFactory::definition()`
 - Update `DatabaseSeeder::run()` to include the MutualFund seeding
 - php artisan migrate:fresh --seed
 
+## Breeze
+
+```
+composer require laravel/breeze --dev
+php artisan breeze:install
+```
