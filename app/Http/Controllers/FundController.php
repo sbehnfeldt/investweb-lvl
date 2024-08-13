@@ -39,7 +39,10 @@ class FundController extends Controller
      */
     public function show(Fund $fund)
     {
-        dd($fund);
+//        dd( $fund );
+        return view('fund', [
+            'fund' => $fund
+        ]);
     }
 
     /**
