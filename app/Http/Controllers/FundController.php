@@ -13,9 +13,7 @@ class FundController extends Controller
      */
     public function index()
     {
-        return view('funds', [
-            'funds' => Fund::all()
-        ]);
+        return view('funds');
     }
 
     /**

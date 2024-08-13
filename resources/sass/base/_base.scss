@@ -58,6 +58,14 @@ body {
             }
 
             tbody {
+                tr:hover {
+                    cursor: pointer;
+
+                    td {
+                        background-color: #aaa;
+                    }
+                }
+
                 td {
                     background-color: var(--td);
                 }
