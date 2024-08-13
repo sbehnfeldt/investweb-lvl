@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MutualFund>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Fund>
  */
-class MutualFundFactory extends Factory
+class FundFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class MutualFundFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => ucwords( join( ' ', fake()->words())) . ' Fund',
+            'name'        => ucwords(join(' ', fake()->words())) . ' Fund',
             'symbol' => strtoupper( fake()->lexify(str_repeat('?', rand(4,8)))),
             'description' => fake()->text
         ];

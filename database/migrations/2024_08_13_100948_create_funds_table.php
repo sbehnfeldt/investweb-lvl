@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('mutual_funds', function (Blueprint $table) {
+        Schema::create('funds', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('symbol')->unique();
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('mutual_funds');
+        Schema::dropIfExists('funds');
     }
 };

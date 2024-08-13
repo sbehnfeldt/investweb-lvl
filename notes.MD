@@ -25,13 +25,14 @@ php artisan serve
 Generate the Post model and all other associated classes:
 
 ```php
-php artisan make:model -a MutualFund
+php artisan make:model -a Fund
 ```
 
+Makes 8 files: Migration, model, controller, factory, seeder, policy, and store and update requests
+
 - Edit the migration
-- Run the migration `php artisan migrate`
-- Define the MutualFund seeding in `MutualFundFactory::definition()`
-- Update `DatabaseSeeder::run()` to include the MutualFund seeding
+- Define the Fund seeding in `FundFactory::definition()`
+- Update `DatabaseSeeder::run()` to include the Fund seeding
 - php artisan migrate:fresh --seed
 
 ## Breeze

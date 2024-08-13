@@ -24,7 +24,7 @@
                         <a href="/">Home</a>
                     </li>
                     <li>
-                        <a href="/mutual_funds">Mutual Funds</a>
+                        <a href="/funds">Mutual Funds</a>
                     </li>
                 </ul>
             </nav>
@@ -41,13 +41,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($mutualFunds as $fund)
+                @foreach($funds as $fund)
                     <tr>
                         <td>{{$fund[ 'symbol']}}</td>
                         <td>{{$fund[ 'name']}}</td>
                         <td>{{$fund[ 'description']}}</td>
                     </tr>
-
                 @endforeach
                 </tbody>
             </table>
