@@ -19,7 +19,7 @@
                         </thead>
                         <tbody>
                         @foreach($funds as $fund)
-                            <tr>
+                            <tr class="bg-white hover:bg-gray-100 hover:cursor-pointer">
                                 <td>{{$fund[ 'symbol']}}</td>
                                 <td>{{$fund[ 'name']}}</td>
                                 <td>{{$fund[ 'description']}}</td>
