@@ -32,4 +32,9 @@
         </div>
     </div>
 
+    <x-slot name="scripts">
+        @vite('resources/js/funds.js')
+    </x-slot>
+
+
 </x-app-layout>

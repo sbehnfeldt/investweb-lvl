@@ -38,6 +38,11 @@ body {
             border-collapse: collapse;
 
             tr {
+                &.selected td {
+                    background-color: rebeccapurple !important;
+                    color: orangered !important;
+                    font-weight: bolder;
+                }
             }
 
             th, td {
