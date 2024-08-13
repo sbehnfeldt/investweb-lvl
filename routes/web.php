@@ -12,6 +12,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/funds', [FundController::class, 'index'])->name('funds');
     Route::get('/funds/{fund}', [FundController::class, 'show'])->where('fund', '[0-9]+')->name('fund');
 //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
+    Route::get('/fund/create', [FundController::class, 'create'])->name('createFund');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
