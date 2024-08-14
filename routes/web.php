@@ -9,10 +9,16 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/funds', [FundController::class, 'index'])->name('funds');
-    Route::get('/funds/{fund}', [FundController::class, 'show'])->where('fund', '[0-9]+')->name('fund');
-//    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
-    Route::get('/fund/create', [FundController::class, 'create'])->name('createFund');
+    Route::resource('funds', FundController::class);
+//    Route::get('/funds', [FundController::class, 'index'])->name('funds.index');
+//    Route::get('/funds/create', [FundController::class, 'create'])->name('funds.create');
+//    Route::post( '/funds', [FundController::class, 'store'])->name( 'funds.store' );
+//    Route::get('/funds/{fund}', [FundController::class, 'show'])->where('fund', '[0-9]+')->name('funds.show');
+//    Route::get('/funds/{fund}/edit', [FundController::class, 'edit'])->where('fund', '[0-9]+')->name('funds.edit');
+//    Route::put('/funds/{fund}', [FundController::class, 'update'])->where('fund', '[0-9]+')->name('funds.update');
+//    Route::delete('/funds/{fund}', [FundController::class, 'destroy'])->where('fund', '[0-9]+')->name('funds.destroy');
+
+    //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

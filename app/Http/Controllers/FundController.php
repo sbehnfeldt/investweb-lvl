@@ -29,7 +29,7 @@ class FundController extends Controller
      */
     public function store(StoreFundRequest $request)
     {
-        //
+        return 'Store new fund';
     }
 
     /**
@@ -37,7 +37,6 @@ class FundController extends Controller
      */
     public function show(Fund $fund)
     {
-//        dd( $fund );
         return view('fund', [
             'fund' => $fund
         ]);
