@@ -21,7 +21,7 @@ class FundController extends Controller
      */
     public function create()
     {
-        return 'create new fund';
+        return view('fund-form');
     }
 
     /**
@@ -47,7 +47,9 @@ class FundController extends Controller
      */
     public function edit(Fund $fund)
     {
-        //
+        return view('fund-form', [
+            'fund' => $fund
+        ]);
     }
 
     /**

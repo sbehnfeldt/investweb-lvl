@@ -50,12 +50,12 @@ $(async function () {
     });
 
     $newFund.on('click', function () {
-        window.location.href = '/fund/create';
+        window.location.href = '/funds/create';
     });
 
     $editFund.on('click', function () {
         const fund           = $('table').find('tr.selected').data();
-        window.location.href = '/funds/' + fund.id;
+        window.location.href = '/funds/' + fund.id + '/edit'
     });
 
     $deleteFund.on('click', function () {

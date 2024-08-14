@@ -5,7 +5,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input: {
-                funds: 'resources/js/funds.js'
+                funds: 'resources/js/funds.js',
+                fundForm: 'resources/js/fund-form.js'
             },
             refresh: true,
         }),

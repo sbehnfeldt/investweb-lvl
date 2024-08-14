@@ -35,5 +35,4 @@
         @vite('resources/js/funds.js')
     </x-slot>
 
-
 </x-app-layout>
