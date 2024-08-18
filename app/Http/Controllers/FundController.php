@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Fund;
 use App\Http\Requests\StoreFundRequest;
 use App\Http\Requests\UpdateFundRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class FundController extends Controller
 {
@@ -68,6 +70,12 @@ class FundController extends Controller
      */
     public function destroy(Fund $fund)
     {
-        //
+        if ( ! Gate::allows('delete-fund', $fund)) {
+            abort(403);
+        }
+
+        $fund->delete();
+
+        return '[]';
     }
 }

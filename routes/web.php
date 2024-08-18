@@ -17,7 +17,7 @@ Route::middleware(['auth'])->group(function () {
 //    Route::get('/funds/{fund}', [FundController::class, 'show'])->where('fund', '[0-9]+')->name('funds.show');
 //    Route::get('/funds/{fund}/edit', [FundController::class, 'edit'])->where('fund', '[0-9]+')->name('funds.edit');
 //    Route::put('/funds/{fund}', [FundController::class, 'update'])->where('fund', '[0-9]+')->name('funds.update');
-//    Route::delete('/funds/{fund}', [FundController::class, 'destroy'])->where('fund', '[0-9]+')->name('funds.destroy');
+//    Route::delete('/funds/{fund:symbol}', [FundController::class, 'destroy'])->where('fund', '[0-9]+')->name('funds.destroy');
 
     //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
 

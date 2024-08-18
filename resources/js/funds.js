@@ -19,27 +19,36 @@ $(async function () {
         }
     }
 
+    function populateTable(funds) {
+        funds.sort((a, b) => {
+            if (a.symbol > b.symbol) {
+                return 1;
+            }
+            if (a.symbol < b.symbol) {
+                return -1;
+            }
+            return 0;
+        }).forEach((fund) => {
+            const $tr = $('<tr>');
+            $tr.append($('<td>').text(fund.symbol));
+            $tr.append($('<td>').text(fund.name));
+            $tr.append($('<td>').text(fund.description));
+            $tr.data(fund);
+            $fundsTable.append($tr);
+        });
+    }
+
+    function clearTable() {
+        $fundsTable.empty();
+    }
+
     const $newFund    = $('#newFund');
     const $editFund   = $('#editFund');
     const $deleteFund = $('#deleteFund');
+    const $fundsTable = $('table');
 
     const funds = await fetchFunds();
-    funds.sort((a, b) => {
-        if (a.symbol > b.symbol) {
-            return 1;
-        }
-        if (a.symbol < b.symbol) {
-            return -1;
-        }
-        return 0;
-    }).forEach((fund) => {
-        const $tr = $('<tr>');
-        $tr.append($('<td>').text(fund.symbol));
-        $tr.append($('<td>').text(fund.name));
-        $tr.append($('<td>').text(fund.description));
-        $tr.data(fund);
-        $('table').append($tr);
-    });
+    populateTable(funds);
 
 
     $('table').on('click', 'tr', function () {
@@ -60,6 +69,29 @@ $(async function () {
 
     $deleteFund.on('click', function () {
         const fund = $('table').find('tr.selected').data();
-        alert(`Delete fund ${fund.symbol}`);
+        alert(`Delete fund ${fund.symbol}, ${fund.id}`);
+
+        fetch(`/funds/${fund.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(async data => {
+                console.log("Success: ", data);
+                clearTable();
+                const funds = await fetchFunds();
+                populateTable(funds);
+            })
+            .catch(error => {
+                console.error("Error: ", error);
+            });
     });
 });
