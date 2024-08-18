@@ -11,6 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <div class="buttons">
                         <button id="newFund">New</button>
+                        <button disabled id="viewFund">View</button>
                         <button disabled id="editFund">Edit</button>
                         <button disabled id="deleteFund" disabled>Delete</button>
                     </div>

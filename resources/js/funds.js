@@ -43,6 +43,7 @@ $(async function () {
     }
 
     const $newFund    = $('#newFund');
+    const $viewFund   = $('#viewFund');
     const $editFund   = $('#editFund');
     const $deleteFund = $('#deleteFund');
     const $fundsTable = $('table');
@@ -54,12 +55,18 @@ $(async function () {
     $('table').on('click', 'tr', function () {
         $(this).closest('table').find('tr').removeClass('selected');
         $(this).addClass('selected');
+        $viewFund.removeAttr('disabled');
         $editFund.removeAttr('disabled');
         $deleteFund.removeAttr('disabled');
     });
 
     $newFund.on('click', function () {
         window.location.href = '/funds/create';
+    });
+
+    $viewFund.on('click', function () {
+        const fund           = $('table').find('tr.selected').data();
+        window.location.href = '/funds/' + fund.id
     });
 
     $editFund.on('click', function () {
