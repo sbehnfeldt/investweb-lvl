@@ -14,9 +14,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <form
-                            @isset($fund)action="/funds/update"
-                            @else action="/funds/store"
-                            @endif>
+                            @isset($fund)action="/funds/{{$fund.id}}" method="put"
+                            @else action="{{ route('funds.store') }}" method="post"
+                            @endif
+                    >
+                        @csrf
 
                         <div class="form-box">
                             <label for="">Name: </label>
@@ -24,8 +26,8 @@
                         </div>
 
                         <div class="form-box">
-                            <label for="">Abbreviation: </label>
-                            <input type="text" name="abbreviation">
+                            <label for="">Symbol: </label>
+                            <input type="text" name="symbol">
                         </div>
 
                         <div class="form-box">
@@ -33,8 +35,8 @@
                             <textarea name="description"></textarea>
                         </div>
 
-                        <button>Submit</button>
-                        <button>Cancel</button>
+                        <button id="submitFormButton">Submit</button>
+                        <button id="cancelFormButton">Cancel</button>
                     </form>
                 </div>
             </div>

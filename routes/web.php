@@ -10,6 +10,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     Route::resource('funds', FundController::class);
+
 //    Route::get('/funds', [FundController::class, 'index'])->name('funds.index');
 //    Route::get('/funds/create', [FundController::class, 'create'])->name('funds.create');
 //    Route::post( '/funds', [FundController::class, 'store'])->name( 'funds.store' );

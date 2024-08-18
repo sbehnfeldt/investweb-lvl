@@ -27,9 +27,12 @@ class FundController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(StoreFundRequest $request)
     {
-        return 'Store new fund';
+        Fund::create($request->validated());
+
+        return redirect()->route('funds.index')->with('success', 'Fund created successfully.');
     }
 
     /**
