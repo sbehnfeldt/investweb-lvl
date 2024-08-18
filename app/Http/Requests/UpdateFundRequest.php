@@ -22,7 +22,9 @@ class UpdateFundRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'        => 'required',
+            'symbol'      => 'required|unique:funds',
+            'description' => 'required'
         ];
     }
 }

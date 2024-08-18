@@ -9,4 +9,14 @@ form {
             width: 7rem;
         }
     }
+
+    .invalid {
+        border: 2px solid red;
+        background-color: #fcd5dc;
+    }
+
+    .alert.alert-danger {
+        color: red;
+    }
 }
+

@@ -76,7 +76,6 @@ $(async function () {
 
     $deleteFund.on('click', function () {
         const fund = $('table').find('tr.selected').data();
-        alert(`Delete fund ${fund.symbol}, ${fund.id}`);
 
         fetch(`/funds/${fund.id}`, {
             method: 'DELETE',

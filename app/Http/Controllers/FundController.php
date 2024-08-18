@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fund;
 use App\Http\Requests\StoreFundRequest;
 use App\Http\Requests\UpdateFundRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class FundController extends Controller
@@ -21,9 +21,13 @@ class FundController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('fund-form');
+        $old = $request->old();
+
+        return view('fund-form', [
+            'old' => $old
+        ]);
     }
 
     /**
@@ -62,7 +66,10 @@ class FundController extends Controller
      */
     public function update(UpdateFundRequest $request, Fund $fund)
     {
-        //
+        $fund->update($request->validated());
+        $fund->save();
+
+        return redirect()->route('funds.index')->with('success', 'Fund updated successfully.');
     }
 
     /**
