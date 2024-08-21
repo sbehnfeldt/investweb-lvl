@@ -14,7 +14,7 @@ $(async function () {
     // is interpreted as an actual value, not ignored (as we would prefer).
     // Some code formatters/prettiers might not account for this and so
     // may split the open and close tags onto separate lines.
-    $descriptionControl.value($descriptionControl.val().trim());
+    $descriptionControl.val($descriptionControl.val().trim());
 
     // See if we are creating a new fund record or editing an existing one
     let href = window.location.href.split('/');
