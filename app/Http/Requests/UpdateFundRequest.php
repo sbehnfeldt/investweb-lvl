@@ -18,12 +18,21 @@ class UpdateFundRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     *
      */
     public function rules(): array
     {
+        if (null === ($fund = $this->route('fund'))) {
+            abort(400, 'No fund specified in request');
+        }
+
+        if ( ! isset($fund->id)) {
+            abort(500, 'Fund has no ID');
+        }
+
         return [
             'name'        => 'required',
-            'symbol'      => 'required|unique:funds',
+            'symbol'      => 'required|unique:funds,' . $fund->id,
             'description' => 'required'
         ];
     }
