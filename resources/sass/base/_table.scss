@@ -1,0 +1,43 @@
+table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+
+    tr {
+        &.selected td {
+            background-color: var(--active);
+            color: var(--active-text);
+            font-weight: bolder;
+        }
+    }
+
+    th, td {
+        border: 1px solid var(--border);
+        padding: .5rem 1rem;
+
+    }
+
+    thead {
+        th {
+            background-color: var(--th);
+        }
+    }
+
+    tbody {
+        tr:hover {
+            cursor: pointer;
+
+            td {
+                background-color: #aaa;
+            }
+        }
+
+        td {
+            background-color: var(--td);
+        }
+
+    }
+
+    tfoot {
+    }
+}
