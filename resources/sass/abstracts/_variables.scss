@@ -1,10 +1,16 @@
 :root {
-    --primary: skyblue;
     --neutral: #fff;
     --border: #444;
     --font-color: #333;
+
+    --primary: #3498db;
+
+    --secondary: #2ecc71;
+
     --active: lightgreen;
     --active-text: #2a720e;
+
+    --brighten: 120%;
 }
 
 nav {

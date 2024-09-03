@@ -1,0 +1,30 @@
+button {
+    width: 10rem;
+
+    margin-right: .75rem;
+    padding: .5rem 0;
+
+    border-radius: 7px;
+
+    background-color: var(--secondary);
+    color: white;
+
+    &:hover {
+        filter: brightness(var(--brighten));
+    }
+
+
+    &.primary {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    &:disabled {
+        background-color: #bdc3c7;
+        color: #7f8c8d;
+    }
+}
+
+.buttons {
+    margin-bottom: .75rem;
+}
