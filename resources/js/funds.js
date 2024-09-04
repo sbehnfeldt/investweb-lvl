@@ -26,10 +26,10 @@ $(async function () {
         $fundsTable.empty();
     }
 
-    const $newFund    = $('#newFund');
-    const $viewFund   = $('#viewFund');
-    const $editFund   = $('#editFund');
-    const $deleteFund = $('#deleteFund');
+    const $newFund    = $('#newResource');
+    const $viewFund   = $('#viewResource');
+    const $editFund   = $('#editResource');
+    const $deleteFund = $('#deleteResource');
     const $fundsTable = $('table');
 
     const funds = await FundsApi.funds();

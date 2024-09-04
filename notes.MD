@@ -85,6 +85,7 @@ Represents an account holding funds and other investments; for example, a 401K, 
 
 ```php
 php artisan make:model -a Account 
+php artisan make:controller api/AccountsController --api
 ```
 
 ## `Transaction` Model

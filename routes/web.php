@@ -11,6 +11,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('funds', FundController::class);
 //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
+    Route::resource('accounts', \App\Http\Controllers\Pages\AccountController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
-use App\Models\Account;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Models\Account;
 
 class AccountController extends Controller
 {
@@ -13,7 +14,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        //
+        return view('accounts');
     }
 
     /**

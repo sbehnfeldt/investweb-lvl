@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Funds') }}
+            {{ __('Accounts') }}
         </h2>
     </x-slot>
 
@@ -19,8 +19,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Symbol</th>
-                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Identifier</th>
                                 <th>Description</th>
                             </tr>
                         </thead>
@@ -33,7 +33,7 @@
     </div>
 
     <x-slot name="scripts">
-        @vite('resources/js/funds.js')
+        @vite('resources/js/accounts.js')
     </x-slot>
 
 </x-app-layout>
