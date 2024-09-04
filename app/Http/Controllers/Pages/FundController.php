@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
-use App\Models\Fund;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFundRequest;
 use App\Http\Requests\UpdateFundRequest;
+use App\Models\Fund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
