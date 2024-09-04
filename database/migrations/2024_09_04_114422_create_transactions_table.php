@@ -12,6 +12,13 @@ return new class extends Migration {
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->date('acquired')->nullable(false);
+            $table->float('quantity')->nullable(false);
+            $table->float('avg_cost_basis')->nullable(false)->default(0);
+
+            $table->bigInteger('fund_id');
+            $table->foreign('fund_id')->references('id')->on('funds')->noActionOnUpdate()->restrictOnDelete();
+
             $table->timestamps();
         });
     }

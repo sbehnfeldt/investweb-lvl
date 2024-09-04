@@ -17,7 +17,9 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'acquired'       => fake()->date(),
+            'quantity'       => fake()->randomFloat(3, 0.01, 1000),
+            'avg_cost_basis' => fake()->randomFloat(2, 1, 100),
         ];
     }
 }

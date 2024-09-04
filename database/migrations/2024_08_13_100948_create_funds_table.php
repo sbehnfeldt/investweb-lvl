@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('funds', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('symbol')->unique();
-            $table->text('description');
+            $table->string('name')->nullable(false)->unique();
+            $table->string('symbol')->nullable(false)->unique();
+            $table->text('description')->nullable(false);
             $table->timestamps();
         });
     }
