@@ -73,3 +73,16 @@ Makes 8 files: Migration, model, controller, factory, seeder, policy, and store 
 - Update `DatabaseSeeder::run()` to include the Fund seeding
 - php artisan migrate:fresh --seed
 
+Generate a controller for the fund API:
+
+```php
+php artisan make:controller Api/FundController --api
+```
+
+## `Transaction` Model
+
+```php
+php artisan make:model -a Transaction
+```
+
+Move TransactionController to Pages directory and namespace.

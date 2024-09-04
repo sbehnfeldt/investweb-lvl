@@ -1,13 +1,10 @@
 <?php
 
-use App\Models\Fund;
+use App\Http\Controllers\Api\FundController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/funds', function () {
-    return Fund::all();
-});
-
-Route::get('/funds/{id}', function ($id) {
-    return Fund::find($id);
-});
+// Currently does not have authorization middleware,
+// since session-based authorization doesn't work for API calls.
+// Will require Sanctum, Passport or other, similar package
+Route::apiResource('funds', FundController::class);
