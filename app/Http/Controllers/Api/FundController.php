@@ -45,6 +45,6 @@ class FundController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Fund::destroy($id);
     }
 }

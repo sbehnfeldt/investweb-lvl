@@ -13,4 +13,9 @@ class FundPolicy
     {
         //
     }
+
+    public function delete()
+    {
+        return true;
+    }
 }

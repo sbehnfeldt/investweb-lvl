@@ -1,23 +1,7 @@
 import $ from 'jquery';
-
+import FundsApi from "@/funds-api.js";
 
 $(async function () {
-
-    async function fetchFunds() {
-        try {
-
-            const response = await fetch('/api/funds');
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-
-            const json = await response.json();
-            return json;
-
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
 
     function populateTable(funds) {
         funds.sort((a, b) => {
@@ -48,7 +32,7 @@ $(async function () {
     const $deleteFund = $('#deleteFund');
     const $fundsTable = $('table');
 
-    const funds = await fetchFunds();
+    const funds = await FundsApi.funds();
     populateTable(funds);
 
 
@@ -60,44 +44,16 @@ $(async function () {
         $deleteFund.removeAttr('disabled');
     });
 
-    $newFund.on('click', function () {
-        window.location.href = '/funds/create';
-    });
+    $newFund.on('click', () => window.location.href = '/funds/create');
+    $viewFund.on('click', () => window.location.href = '/funds/' + $('table').find('tr.selected').data().id);
+    $editFund.on('click', () => window.location.href = '/funds/' + $('table').find('tr.selected').data().id + '/edit');
 
-    $viewFund.on('click', function () {
-        const fund           = $('table').find('tr.selected').data();
-        window.location.href = '/funds/' + fund.id
-    });
-
-    $editFund.on('click', function () {
-        const fund           = $('table').find('tr.selected').data();
-        window.location.href = '/funds/' + fund.id + '/edit'
-    });
-
-    $deleteFund.on('click', function () {
-        const fund = $('table').find('tr.selected').data();
-
-        fetch(`/funds/${fund.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(async data => {
-                console.log("Success: ", data);
-                clearTable();
-                const funds = await fetchFunds();
-                populateTable(funds);
-            })
-            .catch(error => {
-                console.error("Error: ", error);
-            });
+    $deleteFund.on('click', async function () {
+        $viewFund.attr('disabled', true);
+        $editFund.attr('disabled', true);
+        $deleteFund.attr('disabled', true);
+        await FundsApi.delete($('table').find('tr.selected').data().id);
+        clearTable();
+        populateTable(await FundsApi.funds());
     });
 });

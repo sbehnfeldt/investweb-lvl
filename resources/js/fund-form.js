@@ -1,9 +1,7 @@
 import $ from 'jquery';
-import api from './funds-api.js';
+import FundsApi from './funds-api.js';
 
 $(async function () {
-    console.log("Document ready");
-
     let $form               = $('form');
     let $nameControl        = $form.find('[name=name]');
     let $symbolControl      = $form.find('[name=symbol]');
@@ -21,7 +19,7 @@ $(async function () {
     if ('edit' === href.pop()) {
         let id = href.pop();
 
-        let fund = await api.fund(id);
+        let fund = await FundsApi.fund(id);
         $nameControl.val(fund.name);
         $symbolControl.val(fund.symbol);
         $descriptionControl.val(fund.description);
