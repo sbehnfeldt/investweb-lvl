@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Account;
 use App\Models\Fund;
 use App\Models\Transaction;
 use App\Models\User;
@@ -23,10 +24,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Fund::factory(10)->create();
+//        Fund::factory(10)->create();
 
         $this->call([
             FundSeeder::class,
+            AccountSeeder::class,
             TransactionSeeder::class
         ]);
     }

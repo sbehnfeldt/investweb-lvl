@@ -79,6 +79,14 @@ Generate a controller for the fund API:
 php artisan make:controller Api/FundController --api
 ```
 
+## `Account` Model
+
+Represents an account holding funds and other investments; for example, a 401K, an IRA, or a 529.
+
+```php
+php artisan make:model -a Account 
+```
+
 ## `Transaction` Model
 
 ```php
