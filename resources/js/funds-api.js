@@ -28,7 +28,7 @@ const api = {
 
     delete: async (id) => {
         try {
-            const response = await fetch(`/funds/${id}`, {
+            const response = await fetch(`${url}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

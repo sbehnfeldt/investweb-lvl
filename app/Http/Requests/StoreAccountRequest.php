@@ -11,7 +11,7 @@ class StoreAccountRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'company'     => 'required',
+            'identifier'  => 'required|unique:accounts',
+            'description' => 'required'
         ];
     }
 }

@@ -11,7 +11,7 @@ class UpdateAccountRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,18 @@ class UpdateAccountRequest extends FormRequest
      */
     public function rules(): array
     {
+        if (null === ($account = $this->route('account'))) {
+            abort(400, 'No account specified in request');
+        }
+
+        if ( ! isset($account->id)) {
+            abort(500, 'Account has no ID');
+        }
+
         return [
-            //
+            'company'     => 'required',
+            'identifier'  => 'required|unique:accounts,' . $account->id,
+            'description' => 'required'
         ];
     }
 }

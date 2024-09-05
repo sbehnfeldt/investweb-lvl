@@ -2,7 +2,7 @@ import $ from 'jquery';
 import AccountsApi from "@/accounts-api.js";
 
 $(async function () {
-    const clearTable = () => $resourceTable.empty();
+    const clearTable = () => $accountsTable.empty();
 
     const populateTable = (accounts) => {
         accounts.sort((a, b) => {

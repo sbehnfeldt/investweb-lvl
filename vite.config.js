@@ -7,7 +7,8 @@ export default defineConfig({
             input: {
                 funds: 'resources/js/funds.js',
                 fundForm: 'resources/js/fund-form.js',
-                accounts: 'resources/js/accounts.js'
+                accounts: 'resources/js/accounts.js',
+                accountForm: 'resources/js/account-form.js'
             },
             refresh: true,
         }),
