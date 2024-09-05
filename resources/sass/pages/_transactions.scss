@@ -1,0 +1,18 @@
+.accounts .account {
+    padding-bottom: 2rem;
+
+    &:not(:last-of-type) {
+        border-bottom: 2px solid #222222;
+
+    }
+
+    &:nth-child(odd) {
+        background-color: #cccccc;
+    }
+
+    &:nth-child(even) {
+        //background-color: #777777;
+    }
+
+}
+

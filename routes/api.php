@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\api\AccountsController;
+use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\FundController;
+use App\Http\Controllers\Api\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -9,4 +10,5 @@ use Illuminate\Support\Facades\Route;
 // since session-based authorization doesn't work for API calls.
 // Will require Sanctum, Passport or other, similar package
 Route::apiResource('funds', FundController::class);
-Route::apiResource('accounts', AccountsController::class);
+Route::apiResource('accounts', AccountController::class);
+Route::apiResource('transactions', TransactionController::class);
