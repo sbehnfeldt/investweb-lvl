@@ -18,6 +18,8 @@ return new class extends Migration {
 
             $table->bigInteger('fund_id');
             $table->foreign('fund_id')->references('id')->on('funds')->noActionOnUpdate()->restrictOnDelete();
+            $table->bigInteger('account_id');
+            $table->foreign('account_id')->references('id')->on('accounts')->noActionOnUpdate()->restrictOnDelete();
 
             $table->timestamps();
         });
