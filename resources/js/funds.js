@@ -36,7 +36,7 @@ $(async function () {
     populateTable(funds);
 
 
-    $('table').on('click', 'tr', function () {
+    $fundsTable.on('click', 'tr', function () {
         $(this).closest('table').find('tr').removeClass('selected');
         $(this).addClass('selected');
         $viewFund.removeAttr('disabled');

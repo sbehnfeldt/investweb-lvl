@@ -10,10 +10,10 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="buttons">
-                        <button class="primary" id="newResource">New</button>
-                        <button disabled id="viewResource">View</button>
-                        <button disabled id="editResource">Edit</button>
-                        <button disabled id="deleteResource">Delete</button>
+                        <button class="primary" id="newAccount">New</button>
+                        <button disabled id="viewAccount">View</button>
+                        <button disabled id="editAccount">Edit</button>
+                        <button disabled id="deleteAccount">Delete</button>
                     </div>
 
                     <table>

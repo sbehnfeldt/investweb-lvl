@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Models\Account;
+use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
@@ -20,9 +21,13 @@ class AccountController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $old = $request->old();
+
+        return view('account-form', [
+            'old' => $old
+        ]);
     }
 
     /**
@@ -30,7 +35,9 @@ class AccountController extends Controller
      */
     public function store(StoreAccountRequest $request)
     {
-        //
+        Account::create($request->validated());
+
+        return redirect()->route('accounts.index')->with('success', 'Account created successfully.');
     }
 
     /**
@@ -38,7 +45,9 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-        //
+        return view('account', [
+            'account' => $account
+        ]);
     }
 
     /**
@@ -46,7 +55,9 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        //
+        return view('account-form', [
+            'account' => $account
+        ]);
     }
 
     /**
@@ -54,7 +65,10 @@ class AccountController extends Controller
      */
     public function update(UpdateAccountRequest $request, Account $account)
     {
-        //
+        $account->update($request->validated());
+        $account->save();
+
+        return redirect()->route('accounts.index')->with('success', 'Account updated successfully.');
     }
 
     /**
@@ -62,6 +76,8 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-        //
+        $account->delete();
+
+        return '[]';
     }
 }
