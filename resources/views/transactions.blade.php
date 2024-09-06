@@ -10,21 +10,23 @@
         <button disabled id="deleteTransaction">Delete</button>
     </div>
 
-    <div class="accounts">
 
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Account</th>
+                <th>Fund</th>
+                <th>Acquired</th>
+                <th>Quantity</th>
+                <th>Cost Basis</th>
+                <th>Current Value</th>
+            </tr>
+        </thead>
 
-    {{--    <table>--}}
-    {{--        <thead>--}}
-    {{--            <tr>--}}
-    {{--                <th>Acquired</th>--}}
-    {{--                <th>Quantity</th>--}}
-    {{--                <th>Current Value</th>--}}
-    {{--            </tr>--}}
-    {{--        </thead>--}}
-    {{--        <tbody>--}}
-    {{--        </tbody>--}}
-    {{--    </table>--}}
+        <tbody>
+        </tbody>
+    </table>
 
     <x-slot name="scripts">
         @vite('resources/js/transactions.js')

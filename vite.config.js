@@ -8,7 +8,8 @@ export default defineConfig({
                 funds: 'resources/js/funds.js',
                 fundForm: 'resources/js/fund-form.js',
                 accounts: 'resources/js/accounts.js',
-                accountForm: 'resources/js/account-form.js'
+                accountForm: 'resources/js/account-form.js',
+                positions: 'resources/js/positions.js',
             },
             refresh: true,
         }),

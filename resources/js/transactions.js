@@ -5,35 +5,34 @@ import AccountsApi from "@/accounts-api.js";
 
 $(async function () {
 
-    const P = [AccountsApi.accounts(), FundsApi.funds(), TransactionsApi.transactions()]
+    const $table = $('table');
+    const P      = [TransactionsApi.transactions(), AccountsApi.accounts(), FundsApi.funds()]
     Promise.all(P)
         .then((values) => {
-            const $accounts = $('.accounts');
+
+            let accounts = [];
+            values[1].forEach((account) => {
+                accounts[account.id] = account;
+            });
+            let funds = [];
+            values[2].forEach((fund) => {
+                funds[fund.id] = fund;
+            });
+
 
             // Iterate through the Accounts
-            values[0].forEach((account) => {
-                console.log(`Account ${account.id}`);
-                const $account = $('<div class="account">');
+            values[0].forEach((transaction) => {
+                const $tr = $('<tr>');
+                $tr.append($('<td>').text(accounts[transaction.account_id].company));
+                $tr.append($('<td>').text(accounts[transaction.account_id].identifier));
+                $tr.append($('<td>').text(funds[transaction.fund_id].symbol));
+                $tr.append($('<td>').text(transaction.acquired));
+                $tr.append($('<td>').text(transaction.quantity));
+                $tr.append($('<td>').text(transaction.avg_cost_basis));
+                $tr.append($('<td>').text('??'));
 
-                $account.append('<h2>').text(account.company + ': ' + account.identifier);
-                $accounts.append($account);
 
-                // This account's transactions
-                const transactions = values[2].filter((el) => {
-                    return (el.account_id == account.id);
-                });
-
-                // Iterate through each fund, finding all transactions
-                values[1].forEach((fund) => {
-                    const t = transactions.filter((el) => {
-                        return el.fund_id == fund.id;
-                    });
-                    if (!t) {
-                        return;
-                    }
-                    const q = t.reduce((acc, val) => acc + val.quantity, 0);
-                    $account.append($('<p>').text(`${fund.symbol}: ${q}`))
-                });
+                $table.append($tr);
             });
         })
         .catch((err) => {

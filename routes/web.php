@@ -13,6 +13,7 @@ Route::middleware(['auth'])->group(function () {
 //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
     Route::resource('accounts', \App\Http\Controllers\Pages\AccountController::class);
     Route::resource('transactions', \App\Http\Controllers\Pages\TransactionController::class);
+    Route::resource('positions', \App\Http\Controllers\Pages\PositionController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
