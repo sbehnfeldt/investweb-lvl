@@ -5,6 +5,8 @@ import AccountsApi from "@/accounts-api.js";
 
 $(async function () {
 
+    $('#newTransaction').on('click', () => window.location.href = '/transactions/create');
+
     const $table = $('table');
     const P      = [TransactionsApi.transactions(), AccountsApi.accounts(), FundsApi.funds()]
     Promise.all(P)
