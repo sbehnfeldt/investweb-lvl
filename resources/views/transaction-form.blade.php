@@ -12,27 +12,26 @@
 
     <form method="POST"
           @isset($transaction)action={{route('transactions.update', $transaction->id)}}
-            @else action={{route('transactions.store')}}
+            @else action="{{route('transactions.store')}}"
             @endif
     >
         @csrf
+
         @isset($transaction)
             @method('PUT')
         @endif
 
         <div class="form-box">
             <label for="">Account</label>
-            <select name="account">
+            <select name="account_id">
                 <option value="">Select</option>
             </select>
         </div>
 
         <div class="form-box">
             <label for="">Fund: </label>
-            <select name="fund" id="">
+            <select name="fund_id" id="">
                 <option>Select</option>
-                <option value="11">CFVLX</option>
-                <option value="12">FBIOX</option>
             </select>
             @error( 'name' )
             <div class="alert alert-danger">{{ $message  }}</div>
@@ -41,15 +40,22 @@
 
         <div class="form-box">
             <label for="">Acquired</label>
-            <input type="date">
+            <input type="date" name="acquired">
         </div>
         <div class="form-box">
             <label for="">Quantity</label>
-            <input type="number">
+            <input type="number" step="any" name="quantity">
         </div>
         <div class="form-box">
             <label for="">Average Cost Basis</label>
-            $<input type="number" step="any">
+            $<input type="number" step="any" name="avg_cost_basis">
         </div>
+
+        <button id="submitFormButton" class="primary">Submit</button>
+        <button id="cancelFormButton">Cancel</button>
     </form>
+
+    <x-slot name="scripts">
+        @vite('resources/js/transaction-form.js')
+    </x-slot>
 </x-app-layout>

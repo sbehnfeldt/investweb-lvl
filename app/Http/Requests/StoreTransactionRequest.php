@@ -11,7 +11,7 @@ class StoreTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'acquired'       => 'required',
+            'quantity'       => 'required',
+            'avg_cost_basis' => 'required',
+            'fund_id'        => 'required',
+            'account_id'     => 'required'
         ];
     }
 }

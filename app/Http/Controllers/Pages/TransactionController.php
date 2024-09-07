@@ -35,7 +35,9 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        //
+        Transaction::create($request->validated());
+
+        return redirect()->route('transactions.index')->with('success', 'Transaction created successfully');
     }
 
     /**

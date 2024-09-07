@@ -1,4 +1,4 @@
-import $ from 'jQuery';
+import $ from 'jquery';
 import TransactionsApi from "@/transactions-api.js";
 import FundsApi from "@/funds-api.js";
 import AccountsApi from "@/accounts-api.js";
