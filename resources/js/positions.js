@@ -8,14 +8,19 @@ $(async function () {
     const P = [AccountsApi.accounts(), FundsApi.funds(), TransactionsApi.transactions()]
     Promise.all(P)
         .then((values) => {
-            const $accounts = $('.accounts');
+            // Build an array mapping fund ID to fund
+            const funds = [];
+            values[1].forEach((fund) => {
+                funds[fund.id] = fund;
+            });
+            console.log(funds);
 
             // Iterate through the Accounts
+            const $accounts = $('.accounts');
             values[0].forEach((account) => {
-                console.log(`Account ${account.id}`);
                 const $account = $('<div class="account">');
 
-                $account.append('<h2>').text(account.company + ': ' + account.identifier);
+                $account.append('<h2>').text(`${account.company}  ${account.description} ( ${account.identifier})`);
                 $accounts.append($account);
 
                 // This account's transactions
@@ -23,14 +28,16 @@ $(async function () {
                     return (el.account_id == account.id);
                 });
 
-                // Iterate through each fund, finding all transactions
+
                 values[1].forEach((fund) => {
                     const t = transactions.filter((el) => {
                         return el.fund_id == fund.id;
                     });
-                    if (!t) {
+                    console.log(t);
+                    if (!t.length) {
                         return;
                     }
+
                     const q = t.reduce((acc, val) => acc + val.quantity, 0);
                     $account.append($('<p>').text(`${fund.symbol}: ${q}`))
                 });
