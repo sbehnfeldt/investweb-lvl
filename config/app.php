@@ -120,7 +120,11 @@ return [
 
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        'store'  => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'quotes' => [
+        'api_key' => env('ALPHA_VANTAGE_API_KEY', 'spb')
+    ]
 
 ];

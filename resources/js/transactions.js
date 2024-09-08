@@ -16,9 +16,13 @@ $(async function () {
             values[1].forEach((account) => {
                 accounts[account.id] = account;
             });
+
             let funds = [];
-            values[2].forEach((fund) => {
+            values[2].forEach(async (fund) => {
                 funds[fund.id] = fund;
+                let response   = await fetch('/api/quotes/' + fund.symbol);
+                fund.value     = await response.json();
+                console.log(fund.value);
             });
 
 
@@ -31,7 +35,7 @@ $(async function () {
                 $tr.append($('<td>').text(transaction.acquired));
                 $tr.append($('<td>').text(transaction.quantity));
                 $tr.append($('<td>').text(transaction.avg_cost_basis));
-                $tr.append($('<td>').text('??'));
+                $tr.append($('<td>').text(funds[transaction.fund_id].value));
 
 
                 $table.append($tr);

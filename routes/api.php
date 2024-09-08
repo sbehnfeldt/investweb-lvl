@@ -12,3 +12,4 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('funds', FundController::class);
 Route::apiResource('accounts', AccountController::class);
 Route::apiResource('transactions', TransactionController::class);
+Route::apiResource('quotes', \App\Http\Controllers\Api\QuotesController::class);
