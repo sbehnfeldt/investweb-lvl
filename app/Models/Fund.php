@@ -10,4 +10,9 @@ class Fund extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'symbol', 'description'];
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class);
+    }
 }

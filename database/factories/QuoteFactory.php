@@ -21,9 +21,8 @@ class QuoteFactory extends Factory
             'high'               => null,
             'low'                => null,
             'price'              => fake()->randomFloat(2, 1, 100),
-//            'price' => null,
             'volume'             => null,
-            'latest_trading_day' => date('d.m.Y', strtotime("-1 days")),
+            'latest_trading_day' => date('Y-m-d', strtotime("-1 days")),
             'previous_close'     => null,
         ];
     }
