@@ -19,11 +19,16 @@ $(async function () {
 
             let funds = [];
             values[2].forEach(async (fund) => {
-                funds[fund.id] = fund;
-                let response   = await fetch('/api/quotes/' + fund.symbol);
-                fund.value     = await response.json();
-                console.log(fund.value);
+                funds[fund.id]  = fund;
+                fund.fetchQuote = fetch('/api/quotes/' + fund.symbol);
             });
+
+            let responses = funds.map((fund) => fund.fetchQuote);
+
+            Promise.all(responses)
+                .then((quotes) => {
+
+                })
 
 
             // Iterate through the Accounts

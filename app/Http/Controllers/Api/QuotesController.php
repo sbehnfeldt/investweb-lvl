@@ -36,7 +36,7 @@ class QuotesController extends Controller
 //
 //        return $contents['Global Quote']['05. price'];
 
-        return "12.54";
+        return rand(100, 10000) / 100;
     }
 
     /**

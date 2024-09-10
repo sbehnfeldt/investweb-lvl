@@ -95,3 +95,21 @@ php artisan make:model -a Transaction
 ```
 
 Move TransactionController to Pages directory and namespace.
+
+## `Quote` Model
+
+`Quote` model is used to save quotes from 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' . $id . '
+&apikey=' . $apiKey
+most of which is nullable.
+`Api/QuoteController` acts as proxy to alphavantage.co
+
+```php
+php artisan make:model -a Quote
+php artisan make:controller Api/QuoteController --api
+```
+
+When seeding just that single table:
+
+```php
+php artisan db:seed --class Database\Seeders\QuoteSeeder
+```

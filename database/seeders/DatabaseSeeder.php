@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             FundSeeder::class,
             AccountSeeder::class,
-            TransactionSeeder::class
+            TransactionSeeder::class,
+            QuoteSeeder::class
         ]);
     }
 }
