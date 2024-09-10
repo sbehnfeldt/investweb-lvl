@@ -13,6 +13,12 @@ Route::middleware(['auth'])->group(function () {
 //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
     Route::resource('accounts', \App\Http\Controllers\Pages\AccountController::class);
     Route::resource('quotes', \App\Http\Controllers\Pages\QuoteController::class);
+    Route::get('transactions/import', [\App\Http\Controllers\Pages\TransactionController::class, 'showImport'])->name(
+        'transactions.show-import'
+    );
+    Route::post('transactions/import', [\App\Http\Controllers\Pages\TransactionController::class, 'import'])->name(
+        'transactions.import'
+    );
     Route::resource('transactions', \App\Http\Controllers\Pages\TransactionController::class);
     Route::resource('positions', \App\Http\Controllers\Pages\PositionController::class);
 

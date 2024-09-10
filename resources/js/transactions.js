@@ -7,6 +7,12 @@ $(async function () {
 
     $('#newTransaction').on('click', () => window.location.href = '/transactions/create');
 
+    const $newTransaction    = $('#newTransaction');
+    const $viewTransaction   = $('#viewTransaction');
+    const $editTransaction   = $('#editTransaction');
+    const $deleteTransaction = $('#deleteTransaction');
+    const $importTransaction = $('#importTransaction');
+
     const $table = $('table');
     const P      = [TransactionsApi.transactions(), AccountsApi.accounts(), FundsApi.funds()]
     Promise.all(P)
@@ -50,4 +56,12 @@ $(async function () {
             console.error(err);
         });
 
+    $newTransaction.on('click', () => window.location.href = '/transactions/create');
+    $viewTransaction.on('click', () => window.location.href = '/transactions/' + $('table').find('tr.selected').data().id);
+    $editTransaction.on('click', () => window.location.href = '/transactions/' + $('table').find('tr.selected').data().id + '/edit');
+    $deleteTransaction.on('click', async function () {
+        alert("Delete");
+    });
+    $importTransaction.on('click', () => window.location.href = '/transactions/import');
 });
+

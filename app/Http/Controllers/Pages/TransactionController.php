@@ -71,4 +71,14 @@ class TransactionController extends Controller
     {
         //
     }
+
+    public function showImport()
+    {
+        return view('transactions-import');
+    }
+
+    public function import()
+    {
+        return 'imported';
+    }
 }

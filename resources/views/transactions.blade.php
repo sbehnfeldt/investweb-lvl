@@ -8,6 +8,7 @@
         <button disabled id="viewTransaction">View</button>
         <button disabled id="editTransaction">Edit</button>
         <button disabled id="deleteTransaction">Delete</button>
+        <button id="importTransaction">Import</button>
     </div>
 
 
