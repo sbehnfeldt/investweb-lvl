@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
-use App\Models\Quote;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
+use App\Models\Quote;
 
 class QuoteController extends Controller
 {
@@ -13,7 +14,7 @@ class QuoteController extends Controller
      */
     public function index()
     {
-        //
+        return view('quotes');
     }
 
     /**

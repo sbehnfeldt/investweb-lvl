@@ -10,6 +10,7 @@ export default defineConfig({
                 accounts: 'resources/js/accounts.js',
                 accountForm: 'resources/js/account-form.js',
                 positions: 'resources/js/positions.js',
+                quotes: 'resources/js/quotes.js'
             },
             refresh: true,
         }),
