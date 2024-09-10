@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\FundController;
+use App\Http\Controllers\Api\QuotesController;
 use App\Http\Controllers\Api\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,4 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('funds', FundController::class);
 Route::apiResource('accounts', AccountController::class);
 Route::apiResource('transactions', TransactionController::class);
-Route::apiResource('quotes', \App\Http\Controllers\Api\QuotesController::class);
+
+Route::get('/quotes/latest', [QuotesController::class, 'latest'])->name(
+    'quotes.latest'
+); // ! Must go before Route::apiResource( 'quotes' )
+Route::apiResource('quotes', QuotesController::class);

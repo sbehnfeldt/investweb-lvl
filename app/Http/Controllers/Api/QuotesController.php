@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Fund;
 use App\Models\Quote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuotesController extends Controller
 {
@@ -14,7 +15,7 @@ class QuotesController extends Controller
      */
     public function index()
     {
-        //
+        return Quote::with('fund')->get();
     }
 
     /**
@@ -80,5 +81,22 @@ class QuotesController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function latest()
+    {
+        // Yuck.  Return the most recent quote for each fund.
+        return Quote::select('quotes.*', 'funds.*')
+                    ->join('funds', 'funds.id', '=', 'quotes.fund_id')
+                    ->join(
+                        DB::raw(
+                            '(SELECT fund_id, MAX(latest_trading_day) as latest_trading_day FROM quotes GROUP BY fund_id) as recent_quotes'
+                        ),
+                        function ($join) {
+                            $join->on('quotes.fund_id', '=', 'recent_quotes.fund_id')
+                                 ->on('quotes.latest_trading_day', '=', 'recent_quotes.latest_trading_day');
+                        }
+                    )
+                    ->get();
     }
 }
