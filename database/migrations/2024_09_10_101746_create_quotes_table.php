@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->date('latest_trading_day')->nullable();
             $table->float('previous_close')->nullable();
 
-            $table->bigInteger('fund_id');
+            $table->bigInteger('fund_id')->unsigned();
             $table->foreign('fund_id')->references('id')->on('funds')->noActionOnUpdate()->restrictOnDelete();
 
             $table->timestamps();

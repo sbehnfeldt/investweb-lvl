@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Models\Account;
+use App\Models\Fund;
 use App\Models\Transaction;
+use App\Services\TransactionImportService;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -74,11 +77,23 @@ class TransactionController extends Controller
 
     public function showImport()
     {
-        return view('transactions-import');
+        return view('transactions-import', [
+            'accounts' => Account::all(),
+            'funds'    => Fund::all()
+        ]);
     }
 
     public function import()
     {
-        return 'imported';
+        if ( ! isset($_POST["submit"])) {
+            return redirect('/transactions/import');
+        }
+        $results = TransactionImportService::importFile(
+            $_FILES['transactions']['tmp_name'],
+            $_POST['account_id'],
+            $_POST['fund_id']
+        );
+
+        return view('transactions-imported', ['results' => $results]);
     }
 }

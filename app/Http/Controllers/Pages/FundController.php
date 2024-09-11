@@ -37,7 +37,9 @@ class FundController extends Controller
 
     public function store(StoreFundRequest $request)
     {
-        Fund::create($request->validated());
+//        Fund::create($request->validated());
+        $fields = $request->validated();
+        Fund::create($fields);
 
         return redirect()->route('funds.index')->with('success', 'Fund created successfully.');
     }

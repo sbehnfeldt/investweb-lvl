@@ -16,9 +16,9 @@ return new class extends Migration {
             $table->float('quantity')->nullable(false);
             $table->float('avg_cost_basis')->nullable(false)->default(0);
 
-            $table->bigInteger('fund_id');
+            $table->bigInteger('fund_id')->unsigned();
             $table->foreign('fund_id')->references('id')->on('funds')->noActionOnUpdate()->restrictOnDelete();
-            $table->bigInteger('account_id');
+            $table->bigInteger('account_id')->unsigned();
             $table->foreign('account_id')->references('id')->on('accounts')->noActionOnUpdate()->restrictOnDelete();
 
             $table->timestamps();
