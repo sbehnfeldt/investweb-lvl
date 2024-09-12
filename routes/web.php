@@ -12,7 +12,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('funds', FundController::class);
 //    Route::get('/funds/{fund:symbol}', [FundController::class, 'show'])->name('fundBySymbol');
     Route::resource('accounts', \App\Http\Controllers\Pages\AccountController::class);
+
+    Route::get('/quotes/fetch', [\App\Services\QuoteFetcherService::class, 'fetchQuotes']);
     Route::resource('quotes', \App\Http\Controllers\Pages\QuoteController::class);
+
     Route::get('transactions/import', [\App\Http\Controllers\Pages\TransactionController::class, 'showImport'])->name(
         'transactions.show-import'
     );

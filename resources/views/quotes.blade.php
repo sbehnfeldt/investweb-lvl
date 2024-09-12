@@ -3,6 +3,9 @@
         <h2>{{ __('Quotes') }}</h2>
     </x-slot>
 
+    <div class="buttons">
+        <button id="fetchQuotes">Fetch</button>
+    </div>
     <table>
         <thead>
             <tr>

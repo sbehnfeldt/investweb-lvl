@@ -3,6 +3,8 @@ import QuotesApi from "@/quotes-api.js";
 
 $(async function () {
 
+    $('#fetchQuotes').on('click', () => window.location.href = '/quotes/fetch');
+
     const clearTable = () => {
         $table.find('tbody').empty();
     }
