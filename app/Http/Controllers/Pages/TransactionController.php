@@ -78,8 +78,8 @@ class TransactionController extends Controller
     public function showImport()
     {
         return view('transactions-import', [
-            'accounts' => Account::all(),
-            'funds'    => Fund::all()
+            'accounts' => Account::orderBy('description', 'asc')->get(),
+            'funds'    => Fund::orderBy('symbol', 'asc')->get()
         ]);
     }
 

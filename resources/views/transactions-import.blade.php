@@ -10,7 +10,8 @@
             <select name="account_id" id="">
                 <option value="">Select an Account</option>
                 @foreach($accounts as $account)
-                    <option value="{{$account->id}}">{{$account->company}} {{$account->description}}</option>
+                    <option value="{{$account->id}}">{{$account->description}}
+                        ({{$account->company}} {{ $account->identifier }}</option>
                 @endforeach
             </select>
         </div>
