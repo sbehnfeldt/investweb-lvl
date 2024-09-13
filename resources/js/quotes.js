@@ -14,7 +14,7 @@ $(async function () {
             const $tr = $('<tr>');
             $tr.append($('<td>').text(quote.symbol));
             $tr.append($('<td>').text(quote.latest_trading_day));
-            $tr.append($('<td>').text(quote.price));
+            $tr.append($('<td>').text(`$${quote.price}`));
             $table.append($tr);
         });
     };
@@ -23,5 +23,9 @@ $(async function () {
     const quotes = await QuotesApi.latest();
 
     clearTable();
-    populateTable(quotes);
+    populateTable(quotes.sort((a, b) => {
+        if (a.symbol < b.symbol) return -1;
+        if (a.symbol > b.symbol) return 1;
+        return 0;
+    }));
 });

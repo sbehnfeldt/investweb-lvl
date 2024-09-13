@@ -36,76 +36,90 @@ class QuoteFetcherService
         self::$client = $client;
     }
 
+    static public function processApiResponse($fund, $contents)
+    {
+        $contents = json_decode($contents, true);
+        $contents = $contents['Global Quote'];
+        $quote    = Quote::create([
+            'open'               => $contents['02. open'],
+            'high'               => $contents['03. high'],
+            'low'                => $contents['04. low'],
+            'price'              => $contents['05. price'],
+            'volume'             => $contents['06. volume'],
+            'latest_trading_day' => $contents['07. latest trading day'],
+            'previous_close'     => $contents['08. previous close'],
+            'fund_id'            => $fund->id
+        ]);
+        $quote->save();
+    }
+
 
     static public function fetchQuotes()
     {
-        $funds  = Fund::all();
-        $quotes = [];
-//        $promises = [];
+        $funds    = Fund::all();
+        $fundMap  = [];
+        $quotes   = [];
+        $promises = [];
+        $funds2   = [];
 
-        // Identify funds which have NO quotes; they take precedence
+        // Identify funds which have NO quotes ("unquoted funds") -
+        // they take precedence for retrieving quotes
+        // from the free API service, which limits the number of free quotes per day
         foreach ($funds as $fund) {
+            $fundMap[$fund->id] = $fund;
+
             $quote = Quote::where('fund_id', $fund->id)
                           ->orderBy('latest_trading_day', 'desc')
                           ->first();
             if ( ! $quote) {
-                $url      = sprintf(
+                $url = sprintf(
                     'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s',
                     $fund->symbol,
                     config('app.quotes.api_key')
                 );
-                $response = self::getClient()->get($url);
-                $body     = $response->getBody();
-                $contents = $body->getContents();
-                $contents = json_decode($contents, true);
 
-                $contents = $contents['Global Quote'];
-
-                $quote = Quote::create([
-                    'open'               => $contents['02. open'],
-                    'high'               => $contents['03. high'],
-                    'low'                => $contents['04. low'],
-                    'price'              => $contents['05. price'],
-                    'volume'             => $contents['06. volume'],
-                    'latest_trading_day' => $contents['07. latest trading day'],
-                    'previous_close'     => $contents['08. previous close'],
-                    'fund_id'            => $fund->id
-                ]);
-                $quote->save();
-//                $contents = file_get_contents($url);
+                $funds2[]   = $fund;
+                $promises[] = self::getClient()->getAsync($url);
+                break;
             } else {
                 // Append quote
                 $quotes[] = $quote;
             }
         }
 
-        // Settle promises
-//        $responses = Promise\Utils::settle($promises)->wait();
-//        foreach ($responses as $k => $response) {
-//            if ('fulfilled' === $response['state']) {
-//                $body       = $response['value']->getBody();
-//                $contents = $body->getContents();
-//            } else {
-//                $reason = $response['reason'];
-//            }
-//        }
-
+        // Settle unquoted funds
+        $responses = Promise\Utils::settle($promises)->wait();
+        foreach ($responses as $i => $response) {
+            if ('fulfilled' === $response['state']) {
+                $body     = $response['value']->getBody();
+                $contents = $body->getContents();
+                self::processApiResponse($funds2[$i], $contents);
+            }
+        }
 
         // Sort $quotes by date ascending
         usort($quotes, function ($a, $b) {
             return $a->latest_trading_day < $b->latest_trading_day;
         });
 
-
         foreach ($quotes as $quote) {
             if ($quote->latest_trading_day > date('Y-m-d')) {
-                break;
+                continue;   // break?
             }
-        }
-
-        foreach ($quotes as $quote) {
             // Fetch quote
-
+            try {
+                $url = sprintf(
+                    'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s',
+                    $fundMap[$quote->fund_id]->symbol,
+                    config('app.quotes.api_key')
+                );
+                $response = self::getClient()->get($url);
+                $body     = $response->getBody();
+                $contents = $body->getContents();
+                self::processApiResponse($fundMap[$quote->fund_id], $contents);
+            } catch (\Exception $e) {
+                $err = $e->getMessage();
+            }
         }
 
 
