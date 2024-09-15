@@ -26,7 +26,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main>
+        <main @isset($attributes['pageId'])id="{{$attributes['pageId']}}"@endisset>
             {{ $slot }}
         </main>
 

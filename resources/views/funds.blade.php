@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :pageId="$pageId">
     <x-slot name="header">
         <h2>{{ __('Funds') }}</h2>
     </x-slot>

@@ -16,7 +16,9 @@ class FundController extends Controller
      */
     public function index()
     {
-        return view('funds');
+        return view('funds', [
+            'pageId' => 'fundsPage'
+        ]);
     }
 
     /**
