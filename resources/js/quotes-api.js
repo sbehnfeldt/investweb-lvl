@@ -14,7 +14,7 @@ const api = {
     },
     latest: async () => {
         try {
-            const response = await fetch(`${url}/latest`);
+            const response = await fetch(`${url}?latest`);
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }

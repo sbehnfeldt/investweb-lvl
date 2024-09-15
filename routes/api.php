@@ -14,7 +14,4 @@ Route::apiResource('funds', FundController::class);
 Route::apiResource('accounts', AccountController::class);
 Route::apiResource('transactions', TransactionController::class);
 
-Route::get('/quotes/latest', [QuotesController::class, 'latest'])->name(
-    'quotes.latest'
-); // ! Must go before Route::apiResource( 'quotes' )
 Route::apiResource('quotes', QuotesController::class);

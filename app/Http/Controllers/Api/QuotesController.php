@@ -15,7 +15,13 @@ class QuotesController extends Controller
      */
     public function index()
     {
-        return Quote::with('fund')->get();
+        if (array_key_exists('latest', $_GET)) {
+            $quotes = $this->latest();
+        } else {
+            $quotes = Quote::with('fund')->get();
+        }
+
+        return $quotes;
     }
 
     /**
@@ -50,6 +56,7 @@ class QuotesController extends Controller
             $contents = json_decode($contents, true);
             $contents = $contents['Global Quote'];
 
+            // TODO: Error/Exception handling
             $quote = Quote::create([
                 'open'               => $contents['02. open'],
                 'high'               => $contents['03. high'],
