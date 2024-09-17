@@ -59,10 +59,10 @@ $(async function () {
             // Iterate through the Accounts
             const $accounts = $('.accounts');
             values[0].forEach((account) => {
-                const $account = $('<div class="account">');
+                const $account = $('<section class="account">');
 
-                const $h2      = $('<h2>').text(`${account.company}  ${account.description} (${account.identifier})`);
-                $account.append($h2);
+                const $h3 = $('<h3>').text(`${account.company}  ${account.description} (${account.identifier})`);
+                $account.append($h3);
 
                 // This account's transactions
                 const transactions = values[2].filter((el) => {

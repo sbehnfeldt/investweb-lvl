@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>Fund</th>
-                <th>Date</th>
+                <th>Trade Date</th>
                 <th>Price</th>
             </tr>
         </thead>

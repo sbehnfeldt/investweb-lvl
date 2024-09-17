@@ -1,10 +1,24 @@
 .accounts {
     .account {
-        padding: 1rem 1rem;
-
-        ul {
-            padding: 0rem 1rem;
+        table {
+            width: 60rem;
 
         }
+
+        padding: 1rem .5rem 3rem .5rem;
+
+        &:not(:last-of-type) {
+            border-bottom: 2px solid #222222;
+
+        }
+
+        &:nth-child(odd) {
+            background-color: #cfcfcf;
+        }
+
+        &:nth-child(even) {
+            background-color: #ececec;
+        }
     }
+
 }
