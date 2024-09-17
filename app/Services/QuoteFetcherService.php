@@ -36,9 +36,57 @@ class QuoteFetcherService
         self::$client = $client;
     }
 
+    static public function callQuoteApiService($funds)
+    {
+        $promises = [];
+        foreach ($funds as $fund) {
+            $url = sprintf(
+                'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s',
+                $fund->symbol,
+                config('app.quotes.api_key')
+            );
+
+            $promises[] = self::getClient()->getAsync($url);
+        }
+
+        return $promises;
+    }
+
+
+    static public function settleQuotePromises($funds, $promises)
+    {
+        $quotes    = [];
+        $responses = Promise\Utils::settle($promises)->wait();
+
+        foreach ($responses as $i => $response) {
+            if ('fulfilled' === $response['state']) {
+                try {
+                    $body                       = $response['value']->getBody();
+                    $contents                   = $body->getContents();
+                    $quote                      = self::processApiResponse($funds[$i], $contents);
+                    $quotes[$funds[$i]->symbol] = $quote;
+                } catch (\Exception $e) {
+                    $quotes[$funds[$i]->symbol] = $e->getMessage();
+                }
+            }
+        }
+
+
+        return $quotes;
+    }
+
     static public function processApiResponse($fund, $contents)
     {
         $contents = json_decode($contents, true);
+        if ( ! array_key_exists('Global Quote', $contents)) {
+            if (array_key_exists('Note', $contents)) {
+                throw new \Exception($contents['Note']);
+            }
+            if (array_key_exists('Information', $contents)) {
+                throw new \Exception($contents['Information']);
+            }
+            throw new \Exception($contents);
+        }
         $contents = $contents['Global Quote'];
         $quote    = Quote::create([
             'open'               => $contents['02. open'],
@@ -51,78 +99,60 @@ class QuoteFetcherService
             'fund_id'            => $fund->id
         ]);
         $quote->save();
+
+        return $quote;
     }
 
 
     static public function fetchQuotes()
     {
-        $funds    = Fund::all();
-        $fundMap  = [];
-        $quotes   = [];
-        $promises = [];
-        $funds2   = [];
+        $quoted   = [];
+        $unquoted = [];
 
         // Identify funds which have NO quotes ("unquoted funds") -
         // they take precedence for retrieving quotes
         // from the free API service, which limits the number of free quotes per day
-        foreach ($funds as $fund) {
-            $fundMap[$fund->id] = $fund;
-
+        foreach (Fund::all() as $fund) {
             $quote = Quote::where('fund_id', $fund->id)
                           ->orderBy('latest_trading_day', 'desc')
                           ->first();
+
             if ( ! $quote) {
-                $url = sprintf(
-                    'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s',
-                    $fund->symbol,
-                    config('app.quotes.api_key')
-                );
-
-                $funds2[]   = $fund;
-                $promises[] = self::getClient()->getAsync($url);
-                break;
+                $unquoted[] = $fund;
             } else {
-                // Append quote
-                $quotes[] = $quote;
+                // Group $quoted funds by latest trading day
+                if ( ! isset($quoted[$quote->latest_trading_day])) {
+                    $quoted[$quote->latest_trading_day] = [];
+                }
+                $quoted[$quote->latest_trading_day][] = $fund;
             }
         }
 
-        // Settle unquoted funds
-        $responses = Promise\Utils::settle($promises)->wait();
-        foreach ($responses as $i => $response) {
-            if ('fulfilled' === $response['state']) {
-                $body     = $response['value']->getBody();
-                $contents = $body->getContents();
-                self::processApiResponse($funds2[$i], $contents);
-            }
-        }
+        // Fetch quotes for unquoted funds
+        $promises = self::callQuoteApiService($unquoted);
+        $unquoted = self::settleQuotePromises($unquoted, $promises);
 
-        // Sort $quotes by date ascending
-        usort($quotes, function ($a, $b) {
-            return $a->latest_trading_day < $b->latest_trading_day;
+
+        // Sort all identified "latest trading day" dates chronologically,
+        // so that the funds with the "stalest" quotes get updated first
+        $dates = array_keys($quoted);
+        usort($dates, function ($a, $b) {
+            return $a <=> $b;
         });
 
-        foreach ($quotes as $quote) {
-            if ($quote->latest_trading_day > date('Y-m-d')) {
-                continue;   // break?
+        $quotesByDate = [];
+        foreach ($dates as $date) {
+            if ($date > date('Y-m-d')) {
+                // This will probably never happen
+                break;
             }
-            // Fetch quote
-            try {
-                $url = sprintf(
-                    'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s',
-                    $fundMap[$quote->fund_id]->symbol,
-                    config('app.quotes.api_key')
-                );
-                $response = self::getClient()->get($url);
-                $body     = $response->getBody();
-                $contents = $body->getContents();
-                self::processApiResponse($fundMap[$quote->fund_id], $contents);
-            } catch (\Exception $e) {
-                $err = $e->getMessage();
-            }
+            $promises            = self::callQuoteApiService($quoted[$date]);
+            $quotesByDate[$date] = self::settleQuotePromises($quoted[$date], $promises);
         }
 
-
-        return view('quotes');
+        return view('quotes-fetched', [
+            'unquoted' => $unquoted,
+            'quotes'   => $quotesByDate
+        ]);
     }
 }
