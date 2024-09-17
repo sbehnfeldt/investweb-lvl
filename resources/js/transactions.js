@@ -2,6 +2,7 @@ import $ from 'jquery';
 import TransactionsApi from "@/transactions-api.js";
 import FundsApi from "@/funds-api.js";
 import AccountsApi from "@/accounts-api.js";
+import QuotesApi from "@/quotes-api.js";
 
 $(async function () {
 
@@ -14,39 +15,39 @@ $(async function () {
     const $importTransaction = $('#importTransaction');
 
     const $table = $('table');
-    const P      = [TransactionsApi.transactions(), AccountsApi.accounts(), FundsApi.funds()]
+    const P      = [TransactionsApi.transactions(), AccountsApi.accounts(), FundsApi.funds(), QuotesApi.latest()]
     Promise.all(P)
         .then((values) => {
 
-            let accounts = [];
+            // Map account ID to corresponding account
+            let accountsMap = [];
             values[1].forEach((account) => {
-                accounts[account.id] = account;
+                accountsMap[account.id] = account;
             });
 
-            let funds = [];
+            // Map fund ID to corresponding fund
+            let fundsMap = [];
             values[2].forEach(async (fund) => {
-                funds[fund.id]  = fund;
-                fund.fetchQuote = fetch('/api/quotes/' + fund.symbol);
+                fundsMap[fund.id] = fund;
             });
 
-            let responses = funds.map((fund) => fund.fetchQuote);
+            // Map fund ID to corresponding quote
+            let quotesMap = [];
+            values[3].forEach((quote) => {
+                quotesMap[quote.fund_id] = quote;
+            });
 
-            Promise.all(responses)
-                .then((quotes) => {
 
-                })
-
-
-            // Iterate through the Accounts
+            // Construct table, one row per Transaction
             values[0].forEach((transaction) => {
                 const $tr = $('<tr>');
-                $tr.append($('<td>').text(accounts[transaction.account_id].company));
-                $tr.append($('<td>').text(accounts[transaction.account_id].identifier));
-                $tr.append($('<td>').text(funds[transaction.fund_id].symbol));
+                $tr.append($('<td>').text(accountsMap[transaction.account_id].company));
+                $tr.append($('<td>').text(accountsMap[transaction.account_id].identifier));
+                $tr.append($('<td>').text(fundsMap[transaction.fund_id].symbol));
                 $tr.append($('<td>').text(transaction.acquired));
                 $tr.append($('<td>').text(transaction.quantity));
-                $tr.append($('<td>').text(transaction.avg_cost_basis));
-                $tr.append($('<td>').text(funds[transaction.fund_id].value));
+                $tr.append($('<td>').text('$' + transaction.avg_cost_basis.toFixed(2)));
+                $tr.append($('<td>').text('$' + (transaction.quantity * quotesMap[transaction.fund_id].price).toFixed(2)));
 
 
                 $table.append($tr);
