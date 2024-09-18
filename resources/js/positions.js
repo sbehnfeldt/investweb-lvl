@@ -44,17 +44,19 @@ $(async function () {
     const P = [AccountsApi.accounts(), FundsApi.funds(), TransactionsApi.transactions(), QuotesApi.latest()]
     Promise.all(P)
         .then((values) => {
+
             // Build an array mapping fund ID to fund
-            const funds = [];
+            const fundsMap = [];
             values[1].forEach((fund) => {
-                funds[fund.id] = fund;
+                fundsMap[fund.id] = fund;
             });
 
             // Build an array mapping fund ID to quote
-            const quotes = [];
+            const quotesMap = [];
             values[3].forEach((quote) => {
-                quotes[quote.fund_id] = quote;
+                quotesMap[quote.fund_id] = quote;
             });
+
 
             // Iterate through the Accounts
             const $accounts = $('.accounts');
@@ -69,7 +71,21 @@ $(async function () {
                     return (el.account_id == account.id);
                 });
 
-                $account.append(buildTable(funds, quotes, transactions));
+                let accountValue = 0;
+                fundsMap.forEach((fund) => {
+                    const t = transactions.filter((el) => {
+                        return el.fund_id == fund.id;
+                    });
+                    if (!t.length) {
+                        return;
+                    }
+                    const q = t.reduce((acc, val) => acc + val.quantity, 0);
+                    accountValue += q * quotesMap[fund.id].price;
+                });
+                $account.append($('<p>').text(`Account Value: $${parseFloat(accountValue.toFixed(2)).toLocaleString('en-US')}`));
+
+
+                $account.append(buildTable(fundsMap, quotesMap, transactions));
                 $accounts.append($account);
             });
         })
