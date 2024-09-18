@@ -21,20 +21,20 @@
         @endif
 
         <div class="form-box">
-            <label for="">Name: </label>
-            <input type="text" class="@error('name') invalid @enderror" name="name"
-                   @isset($old[ 'name' ])value="{{$old[ 'name' ]}}@endisset">
-            @error( 'name' )
-            <div class="alert alert-danger">{{ $message  }}</div>
-            @enderror
-        </div>
-
-        <div class="form-box">
             <label for="">Symbol: </label>
             <input type="text" class="@error('symbol') invalid @enderror" name="symbol"
                    @isset($old[ 'symbol'])value="{{$old[ 'symbol']}}"@endisset >
             @error('symbol')
             <div class="alert alert-danger">{{$message}}</div>
+            @enderror
+        </div>
+
+        <div class="form-box">
+            <label for="">Name: </label>
+            <input type="text" class="@error('name') invalid @enderror" name="name"
+                   @isset($old[ 'name' ])value="{{$old[ 'name' ]}}@endisset">
+            @error( 'name' )
+            <div class="alert alert-danger">{{ $message  }}</div>
             @enderror
         </div>
 

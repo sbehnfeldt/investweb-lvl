@@ -36,7 +36,7 @@ class QuoteFetcherService
         self::$client = $client;
     }
 
-    static public function callQuoteApiService($funds)
+    static public function callQuoteApi($funds)
     {
         $promises = [];
         foreach ($funds as $fund) {
@@ -79,13 +79,7 @@ class QuoteFetcherService
     {
         $contents = json_decode($contents, true);
         if ( ! array_key_exists('Global Quote', $contents)) {
-            if (array_key_exists('Note', $contents)) {
-                throw new \Exception($contents['Note']);
-            }
-            if (array_key_exists('Information', $contents)) {
-                throw new \Exception($contents['Information']);
-            }
-            throw new \Exception($contents);
+            throw new \Exception(json_encode($contents));
         }
         $contents = $contents['Global Quote'];
         $quote    = Quote::create([
@@ -129,7 +123,7 @@ class QuoteFetcherService
         }
 
         // Fetch quotes for unquoted funds
-        $promises = self::callQuoteApiService($unquoted);
+        $promises = self::callQuoteApi($unquoted);
         $unquoted = self::settleQuotePromises($unquoted, $promises);
 
 
@@ -146,7 +140,7 @@ class QuoteFetcherService
                 // This will probably never happen
                 break;
             }
-            $promises            = self::callQuoteApiService($quoted[$date]);
+            $promises            = self::callQuoteApi($quoted[$date]);
             $quotesByDate[$date] = self::settleQuotePromises($quoted[$date], $promises);
         }
 
