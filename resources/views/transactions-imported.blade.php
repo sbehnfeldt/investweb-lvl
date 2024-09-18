@@ -5,7 +5,7 @@
 
     <ul>
         @foreach($results as $i => $r)
-            <li>{{ $i }}. {{ $r }}</li>
+            <li>{{ $i + 1 }}. {{ $r }}</li>
         @endforeach
     </ul>
 </x-app-layout>

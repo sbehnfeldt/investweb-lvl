@@ -41,8 +41,7 @@ $(async function () {
             // Construct table, one row per Transaction
             values[0].forEach((transaction) => {
                 const $tr = $('<tr>');
-                $tr.append($('<td>').text(accountsMap[transaction.account_id].company));
-                $tr.append($('<td>').text(accountsMap[transaction.account_id].identifier));
+                $tr.append($('<td>').text(`${accountsMap[transaction.account_id].description} (${accountsMap[transaction.account_id].company} ${accountsMap[transaction.account_id].identifier})`));
                 $tr.append($('<td>').text(fundsMap[transaction.fund_id].symbol));
                 $tr.append($('<td>').text(transaction.acquired));
                 $tr.append($('<td>').text(transaction.quantity));

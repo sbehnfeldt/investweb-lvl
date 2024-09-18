@@ -15,7 +15,6 @@
     <table>
         <thead>
             <tr>
-                <th>Company</th>
                 <th>Account</th>
                 <th>Fund</th>
                 <th>Acquired</th>

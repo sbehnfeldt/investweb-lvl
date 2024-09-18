@@ -36,7 +36,7 @@ class TransactionImportService
         try {
             $transaction = new Transaction([
                 'acquired'       => DateTime::createFromFormat('M-d-Y', $fields[0]),
-                'quantity'       => $fields[5],
+                'quantity'       => (float)(str_replace(',', '', $fields[5])),
                 'avg_cost_basis' => (float)str_replace(['$', ','], '', $fields[6]),
                 'account_id'     => $account_id,
                 'fund_id'        => $fund_id,
