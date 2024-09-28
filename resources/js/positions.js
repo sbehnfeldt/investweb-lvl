@@ -13,16 +13,18 @@ $(async function () {
     /**
      * Calculate and return the ROI based on a single investment
      *
-     * @param transactions
+     * @param quantity
+     * @param avg_cost_basis
+     * @param acquired
      * @param totalQuantity
      * @param latest_trading_day
      * @param price
      * @returns {number}
      */
-    const getSimpleAnnualizedRoi = ({quantity, avg_cost_basis, acquired}, totalQuantity, {
-        latest_trading_day,
-        price
-    }) => {
+    const getSimpleAnnualizedRoi = (
+        {quantity, avg_cost_basis, acquired},
+        totalQuantity,
+        {latest_trading_day, price}) => {
 
         const initialValue     = quantity * avg_cost_basis;
         const currentValue     = totalQuantity * price;
@@ -31,8 +33,9 @@ $(async function () {
         const differenceInMs   = currentDate - initialDate;
         const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
 
-        return (Math.pow(currentValue / initialValue, 365.25 / differenceInDays) - 1) * 100;
+        return (Math.pow(currentValue / initialValue, 365.25 / differenceInDays) - 1);
     }
+
 
     /**
      * Calculate and return the ROI based upon multiple distinct investments
@@ -45,7 +48,66 @@ $(async function () {
      */
     const getXirr = (transactions, totalQty, {latest_trading_day, price}) => {
 
-        return 0;
+        const calculateFutureValue = ({avg_cost_basis, quantity, acquired}, latest_trading_day, rate) => {
+            const P = avg_cost_basis * quantity;
+            const T = (new Date(latest_trading_day) - new Date(acquired)) / (1000 * 60 * 60 * 24); // Time interval in ms
+            return P * Math.pow(Math.E, (rate / 365.25) * T);
+        }
+
+        const epsilon = (vTrue, vGuess) => {
+            return Math.abs((vTrue - vGuess) / vTrue);
+        }
+
+        // First, for each day on which any money was invested,
+        // calculate what the return WOULD have been if ALL the money had been invested on that day
+        const total_cost_basis = transactions.reduce((acc, cur) => acc + (cur.avg_cost_basis * cur.quantity), 0);
+        const rois             = transactions.map((t) => getSimpleAnnualizedRoi({
+            quantity: 1,
+            avg_cost_basis: total_cost_basis,
+            acquired: t.acquired
+        }, totalQty, {latest_trading_day, price}))
+
+
+        // Pick the highest and lowest of those returns; the actual return must be in between
+        let roi0 = Math.min(...rois);
+        let roi1 = Math.max(...rois);
+
+        let pv;
+        let roi;
+
+        do {
+            // Calculate what the present value would have been
+            // if all the money were invested at the LOWEST rate of return
+            let pv0 = transactions.reduce((acc, cur) => {
+                return acc + calculateFutureValue(cur, latest_trading_day, roi0);
+            }, 0);
+
+            // Calculate what the present value would have been
+            // if all the money were invested at the HIGHEST rate of return
+            let pv1 = transactions.reduce((acc, cur) => {
+                return acc + calculateFutureValue(cur, latest_trading_day, roi1);
+            }, 0);
+            console.log(`${Number(100 * roi0).toFixed(2)} => $${Number(pv0).toFixed(2)}, ${Number(100 * roi1).toFixed(2)} => $${Number(pv1).toFixed(2)}`);
+
+
+            let ratio = ((totalQty * price) - pv0) / (pv1 - pv0);
+            roi       = roi0 + (ratio * (roi1 - roi0));
+            pv        = transactions.reduce((acc, cur) => {
+                return acc + calculateFutureValue(cur, latest_trading_day, roi);
+            }, 0);
+            console.log(`${Number(totalQty * price).toFixed(2)}: ${Number(100 * roi).toFixed(2)} => $${Number(pv).toFixed(2)}: ${Math.abs(pv / (totalQty * price))}`);
+
+            if (pv > totalQty * price) {
+                roi1 = roi;
+            } else {
+                roi0 = roi;
+            }
+            console.log(epsilon(totalQty * price, pv));
+
+        } while (epsilon(totalQty * price, pv) > .0001);
+
+        console.log(`*** ${Number(100 * roi).toFixed(2)} ***`)
+        return roi;
     }
 
 
@@ -112,7 +174,7 @@ $(async function () {
             $tr.append($('<td>').text(`$${(q * quotes[fund.id].price).toFixed(2)}`));
             $tr.append($('<td>').text(`${q.toFixed(3)}`));
             $tr.append($('<td>').text(`$${(quotes[fund.id].price).toFixed(2)}`));
-            $tr.append($('<td>').text(Number(getAnnualizedRoi(t, quotes[fund.id])).toFixed(2) + '%'));
+            $tr.append($('<td>').text(Number(100 * getAnnualizedRoi(t, quotes[fund.id])).toFixed(2) + '%'));
             $tbody.append($tr);
         });
         $table.append($tbody);
