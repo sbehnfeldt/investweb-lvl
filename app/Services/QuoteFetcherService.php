@@ -68,6 +68,8 @@ class QuoteFetcherService
                 } catch (\Exception $e) {
                     $quotes[$funds[$i]->symbol] = $e->getMessage();
                 }
+            } else {
+                $quotes[$funds[$i]->symbol] = $response['reason']->getMessage();
             }
         }
 
