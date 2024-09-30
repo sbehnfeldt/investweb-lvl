@@ -10,6 +10,20 @@ $(async function () {
     const quotesMap = [];
 
 
+    // Calculate the future value of a transaction.
+    // This is simply the standard foruma: V' = Ve^(rt) customized for this application
+    const calculateFutureValue = ({avg_cost_basis, quantity, acquired}, latest_trading_day, rate) => {
+        const P = avg_cost_basis * quantity;
+        const T = (new Date(latest_trading_day) - new Date(acquired)) / (1000 * 60 * 60 * 24); // Time interval in ms
+        return P * Math.pow(Math.E, (rate / 365.25) * T);
+    }
+
+    // Determine how close one value (the guess) is to another value (the tru value)
+    const epsilon = (vTrue, vGuess) => {
+        return Math.abs((vTrue - vGuess) / vTrue);
+    }
+
+
     /**
      * Calculate and return the ROI based on a single investment
      *
@@ -38,43 +52,58 @@ $(async function () {
 
 
     /**
-     * Calculate and return the ROI based upon multiple distinct investments
+     * Determine the initial upper and lower limits of ROI for a fund with multiple investment transactions.
      *
-     * @param transactions
-     * @param totalQty
-     * @param latest_trading_day
-     * @param price
-     * @returns {number}
+     * @param transactions Transactions for which cash money was actually laid out (ie, excluding re-invested dividends)
+     * @param totalQty Current total quantity of fund shares (including re-invested dividends)
+     * @param price Latest quote price
+     * @param latest_trading_day Date of the latest quote price
+     * @returns {[number,number]}
      */
-    const getXirr = (transactions, totalQty, {latest_trading_day, price}) => {
+    const getXirrInitialRoiLimits = (transactions, totalQty, price, latest_trading_day) => {
 
-        const calculateFutureValue = ({avg_cost_basis, quantity, acquired}, latest_trading_day, rate) => {
-            const P = avg_cost_basis * quantity;
-            const T = (new Date(latest_trading_day) - new Date(acquired)) / (1000 * 60 * 60 * 24); // Time interval in ms
-            return P * Math.pow(Math.E, (rate / 365.25) * T);
-        }
-
-        const epsilon = (vTrue, vGuess) => {
-            return Math.abs((vTrue - vGuess) / vTrue);
-        }
-
-        // First, for each day on which any money was invested,
-        // calculate what the return WOULD have been if ALL the money had been invested on that day
+        // Determine all the money actually invested
         const total_cost_basis = transactions.reduce((acc, cur) => acc + (cur.avg_cost_basis * cur.quantity), 0);
-        const rois             = transactions.map((t) => getSimpleAnnualizedRoi({
+
+        // For each day on which any money was invested,
+        //    calculate what the ROI *would* have been
+        //    if *all* the money had been invested on that day.
+        const rois = transactions.map((t) => getSimpleAnnualizedRoi({
             quantity: 1,
             avg_cost_basis: total_cost_basis,
             acquired: t.acquired
         }, totalQty, {latest_trading_day, price}))
 
+        // Pick the highest and lowest of those ROIs; the actual ROI must be between these two limits
+        return [Math.min(...rois), Math.max(...rois)];
+    }
 
-        // Pick the highest and lowest of those returns; the actual return must be in between
-        let roi0 = Math.min(...rois);
-        let roi1 = Math.max(...rois);
 
+    /**
+     * Calculate and return the annualized ROI of multiple distinct investments
+     *
+     * @param transactions
+     * @param totalQty
+     * @param price
+     * @param latest_trading_day
+     * @returns {number}
+     */
+    const getXirr = (transactions, totalQty, {price, latest_trading_day}) => {
+
+        let [roi0, roi1] = getXirrInitialRoiLimits(transactions, totalQty, price, latest_trading_day);
+        if (roi0 === roi1) {
+            return roi0;
+        }
+
+        // Determine the actual ROI:
+        // - guess an ROI between the known upper and lower limits;
+        // - calculate what the present value WOULD be, based on that guess;
+        // - compare that calculation to the actual present value;
+        // - adjust the upper or lower limit accordingly, and repeat
+        // until the calculated value is with some tolerance ("epsilon") of the actual value,
+        // at which point the guess is considered sufficiently close and returned to the caller
         let pv;
         let roi;
-
         do {
             // Calculate what the present value would have been
             // if all the money were invested at the LOWEST rate of return
@@ -87,7 +116,7 @@ $(async function () {
             let pv1 = transactions.reduce((acc, cur) => {
                 return acc + calculateFutureValue(cur, latest_trading_day, roi1);
             }, 0);
-            console.log(`${Number(100 * roi0).toFixed(2)} => $${Number(pv0).toFixed(2)}, ${Number(100 * roi1).toFixed(2)} => $${Number(pv1).toFixed(2)}`);
+            // console.log(`${Number(100 * roi0).toFixed(2)}% => $${Number(pv0).toFixed(2)}, ${Number(100 * roi1).toFixed(2)}% => $${Number(pv1).toFixed(2)}`);
 
 
             let ratio = ((totalQty * price) - pv0) / (pv1 - pv0);
@@ -95,18 +124,18 @@ $(async function () {
             pv        = transactions.reduce((acc, cur) => {
                 return acc + calculateFutureValue(cur, latest_trading_day, roi);
             }, 0);
-            console.log(`${Number(totalQty * price).toFixed(2)}: ${Number(100 * roi).toFixed(2)} => $${Number(pv).toFixed(2)}: ${Math.abs(pv / (totalQty * price))}`);
+            // console.log(`${Number(totalQty * price).toFixed(2)}: ${Number(100 * roi).toFixed(2)} => $${Number(pv).toFixed(2)}: ${Math.abs(pv / (totalQty * price))}`);
 
             if (pv > totalQty * price) {
                 roi1 = roi;
             } else {
                 roi0 = roi;
             }
-            console.log(epsilon(totalQty * price, pv));
+            // console.log(epsilon(totalQty * price, pv));
 
         } while (epsilon(totalQty * price, pv) > .0001);
 
-        console.log(`*** ${Number(100 * roi).toFixed(2)} ***`)
+        // console.log(`*** ${Number(100 * roi).toFixed(2)} ***`)
         return roi;
     }
 
@@ -166,6 +195,8 @@ $(async function () {
             if (!t.length) {
                 return;
             }
+
+            console.log(fund.symbol);
 
             const q = t.reduce((acc, val) => acc + val.quantity, 0);
 
