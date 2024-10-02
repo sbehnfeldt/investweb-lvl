@@ -6,6 +6,7 @@ use App\Models\Fund;
 use App\Models\Quote;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
+use Illuminate\Support\Facades\Log;
 
 class QuoteFetcherService
 {
@@ -65,14 +66,24 @@ class QuoteFetcherService
                     $contents                   = $body->getContents();
                     $quote                      = self::processApiResponse($funds[$i], $contents);
                     $quotes[$funds[$i]->symbol] = $quote;
+                    Log::info(sprintf("%s: %s  $%.2f", $funds[$i]->symbol, date('Y-m-d'), $quote->price));
                 } catch (\Exception $e) {
-                    $quotes[$funds[$i]->symbol] = $e->getMessage();
+                    $temp = json_decode($e->getMessage(), true);
+                    if (array_key_exists('Note', $temp)) {
+                        $msg = sprintf("Note - %s", $temp['Note']);
+                    } elseif (array_key_exists('Information', $temp)) {
+                        $msg = sprintf("Information - %s", $temp['Information']);
+                    } else {
+                        $msg = $e->getMessage();
+                    }
+                    Log::error(sprintf("%s: %s", $funds[$i]->symbol, $msg));
+                    $quotes[$funds[$i]->symbol] = $msg;
                 }
             } else {
                 $quotes[$funds[$i]->symbol] = $response['reason']->getMessage();
+                Log::error($response['reason']->getMessage());
             }
         }
-
 
         return $quotes;
     }
@@ -102,6 +113,7 @@ class QuoteFetcherService
 
     static public function fetchQuotes()
     {
+        Log::info('Fetching quotes');
         $quoted   = [];
         $unquoted = [];
 
