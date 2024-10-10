@@ -12,11 +12,11 @@
                     <x-nav-link :href="route('positions.index')" :active="request()->routeIs('positions.index')">
                         {{ __('Positions') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.index')">
-                        {{ __('Transactions') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('quotes.index')" :active="request()->routeIs('quotes.index')">
                         {{ __('Quotes') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.index')">
+                        {{ __('Transactions') }}
                     </x-nav-link>
                     <x-nav-link :href="route('funds.index')" :active="request()->routeIs('funds.index')">
                         {{ __('Funds') }}
