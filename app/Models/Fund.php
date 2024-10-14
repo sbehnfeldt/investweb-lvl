@@ -9,7 +9,7 @@ class Fund extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'symbol', 'description'];
+    protected $fillable = ['name', 'symbol', 'description', 'asset_class'];
 
     public function quotes()
     {

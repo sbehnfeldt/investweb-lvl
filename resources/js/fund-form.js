@@ -5,7 +5,12 @@ $(async function () {
     let $form               = $('form');
     let $nameControl        = $form.find('[name=name]');
     let $symbolControl      = $form.find('[name=symbol]');
+    let $assetClassControl  = $form.find('[name=asset_class]')
     let $descriptionControl = $form.find('[name=description]');
+
+    const $submit = $('#submitFormButton');
+    const $cancel = $('#cancelFormButton');
+
 
     // Strip useless whitespace (if any) from the value in the "Description" text box.
     // Any whitespace between opening and closing tags of a <textarea> element
@@ -22,12 +27,10 @@ $(async function () {
         let fund = await FundsApi.fund(id);
         $nameControl.val(fund.name);
         $symbolControl.val(fund.symbol);
+        $assetClassControl.val(fund.asset_class);
         $descriptionControl.val(fund.description);
     }
 
-
-    const $submit = $('#submitFormButton');
-    const $cancel = $('#cancelFormButton');
 
     $cancel.on('click', function (e) {
         e.preventDefault();

@@ -21,6 +21,15 @@
         @endif
 
         <div class="form-box">
+            <label for="">Name: </label>
+            <input type="text" class="@error('name') invalid @enderror" name="name"
+                   @isset($old[ 'name' ])value="{{$old[ 'name' ]}}@endisset">
+            @error( 'name' )
+            <div class="alert alert-danger">{{ $message  }}</div>
+            @enderror
+        </div>
+
+        <div class="form-box">
             <label for="">Symbol: </label>
             <input type="text" class="@error('symbol') invalid @enderror" name="symbol"
                    @isset($old[ 'symbol'])value="{{$old[ 'symbol']}}"@endisset >
@@ -30,12 +39,12 @@
         </div>
 
         <div class="form-box">
-            <label for="">Name: </label>
-            <input type="text" class="@error('name') invalid @enderror" name="name"
-                   @isset($old[ 'name' ])value="{{$old[ 'name' ]}}@endisset">
-            @error( 'name' )
-            <div class="alert alert-danger">{{ $message  }}</div>
-            @enderror
+            <label for="">Asset Class: </label>
+            <select name="asset_class">
+                <option value=""></option>
+                <option value="equity">Equity</option>
+                <option value="bond">Bonds</option>
+            </select>
         </div>
 
         <div class="form-box">

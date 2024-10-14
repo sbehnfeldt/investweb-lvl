@@ -18,8 +18,9 @@ class FundFactory extends Factory
     {
         return [
             'name'        => ucwords(join(' ', fake()->words())) . ' Fund',
-            'symbol' => strtoupper( fake()->lexify(str_repeat('?', rand(4,8)))),
-            'description' => fake()->text
+            'symbol'      => strtoupper(fake()->lexify(str_repeat('?', rand(4, 8)))),
+            'description' => fake()->text,
+            'asset_class' => fake()->randomElement(['equity', 'bond', null])
         ];
     }
 }
