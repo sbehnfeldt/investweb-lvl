@@ -31,7 +31,7 @@ class UpdateAccountRequest extends FormRequest
 
         return [
             'company'     => 'required',
-            'identifier'  => 'required|unique:accounts,' . $account->id,
+            'identifier'  => 'required|unique:accounts,identifier,' . $account->id,
             'description' => 'required'
         ];
     }
