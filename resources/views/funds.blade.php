@@ -15,6 +15,8 @@
             <tr>
                 <th>Symbol</th>
                 <th>Name</th>
+                <th>Region</th>
+                <th>Sector</th>
                 <th>Asset Class</th>
             </tr>
         </thead>

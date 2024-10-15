@@ -71,7 +71,6 @@ class FundController extends Controller
      */
     public function update(UpdateFundRequest $request, Fund $fund)
     {
-        $temp = $request->validated();
         $fund->update($request->validated());
         $fund->save();
 

@@ -20,7 +20,9 @@ class FundFactory extends Factory
             'name'        => ucwords(join(' ', fake()->words())) . ' Fund',
             'symbol'      => strtoupper(fake()->lexify(str_repeat('?', rand(4, 8)))),
             'description' => fake()->text,
-            'asset_class' => fake()->randomElement(['equity', 'bond', null])
+            'asset_class' => fake()->randomElement(['equity', 'bond', null]),
+            'sector'      => fake()->randomElement(['Industrials', 'Software', 'Health', 'Finance', null]),
+            'region'      => fake()->randomElement(['Domestic', 'International', 'Global', 'Emerging Markets', null])
         ];
     }
 }
