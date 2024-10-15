@@ -45,6 +45,9 @@
                 <option value="equity">Equity</option>
                 <option value="bond">Bonds</option>
             </select>
+            @error('asset_class')
+            <div class="alert alert-danger">{{$message}}</div>
+            @enderror
         </div>
 
         <div class="form-box">

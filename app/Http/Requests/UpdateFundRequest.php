@@ -33,8 +33,7 @@ class UpdateFundRequest extends FormRequest
         return [
             'name'        => 'required',
             'symbol'      => 'required|unique:funds,symbol,' . $fund->id,
-            'description' => 'required',
-            'asset_class' => 'required'
+            'description' => 'required'
         ];
     }
 }

@@ -196,8 +196,6 @@ $(async function () {
                 return;
             }
 
-            console.log(fund.symbol);
-
             const q = t.reduce((acc, val) => acc + val.quantity, 0);
 
             const $tr = $('<tr>');
