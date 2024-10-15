@@ -16,7 +16,6 @@ $(async function () {
             const $tr = $('<tr>');
             $tr.append($('<td>').text(fund.symbol));
             $tr.append($('<td>').text(fund.name));
-            $tr.append($('<td>').text(fund.description));
             $tr.append($('<td>').text(fund.asset_class ? fund.asset_class.charAt(0).toUpperCase() + fund.asset_class.slice(1) : ''));
             $tr.data(fund);
             $fundsTable.append($tr);

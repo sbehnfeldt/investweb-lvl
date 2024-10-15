@@ -15,7 +15,6 @@
             <tr>
                 <th>Symbol</th>
                 <th>Name</th>
-                <th>Description</th>
                 <th>Asset Class</th>
             </tr>
         </thead>
